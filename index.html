@@ -1,0 +1,1774 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Smart List</title>
+
+    <style>
+
+        /* =========================
+           ASOSIY
+        ========================= */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f3f6fb;
+            color: #1f2937;
+            transition: 0.3s;
+        }
+
+        body.dark {
+            background: #111827;
+            color: #f9fafb;
+        }
+
+        .container {
+            width: 94%;
+            max-width: 1200px;
+            margin: auto;
+            padding: 20px 0 50px;
+        }
+
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .logo {
+            font-size: 29px;
+            font-weight: bold;
+            color: #2563eb;
+        }
+
+        .logo span {
+            color: #111827;
+        }
+
+        body.dark .logo span {
+            color: white;
+        }
+
+        .theme-btn {
+            border: none;
+            background: #2563eb;
+            color: white;
+            padding: 11px 16px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .theme-btn:hover {
+            background: #1d4ed8;
+        }
+
+
+        /* =========================
+           BUDGET
+        ========================= */
+
+        .budget-box {
+            background: white;
+            padding: 22px;
+            border-radius: 18px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.06);
+        }
+
+        body.dark .budget-box,
+        body.dark .card,
+        body.dark .form-box,
+        body.dark .shopping-list,
+        body.dark .statistics {
+            background: #1f2937;
+        }
+
+        .budget-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 15px;
+        }
+
+        .budget-title {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .budget-input {
+            display: flex;
+            gap: 10px;
+        }
+
+        .budget-input input {
+            width: 180px;
+            margin: 0;
+        }
+
+        .set-budget-btn {
+            background: #16a34a;
+            color: white;
+            border: none;
+            border-radius: 9px;
+            padding: 11px 15px;
+            cursor: pointer;
+        }
+
+        .budget-info {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .budget-stat {
+            padding: 15px;
+            background: #f8fafc;
+            border-radius: 12px;
+        }
+
+        body.dark .budget-stat {
+            background: #111827;
+        }
+
+        .budget-stat small {
+            display: block;
+            color: #6b7280;
+            margin-bottom: 6px;
+        }
+
+        .budget-stat strong {
+            font-size: 20px;
+        }
+
+        .progress-bg {
+            width: 100%;
+            height: 14px;
+            background: #e5e7eb;
+            border-radius: 20px;
+            overflow: hidden;
+            margin-top: 15px;
+        }
+
+        .progress {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(
+                90deg,
+                #2563eb,
+                #60a5fa
+            );
+            border-radius: 20px;
+            transition: 0.5s;
+        }
+
+        .warning {
+            margin-top: 12px;
+            padding: 12px;
+            background: #fee2e2;
+            color: #b91c1c;
+            border-radius: 10px;
+            display: none;
+        }
+
+
+        /* =========================
+           CARDS
+        ========================= */
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+            margin-bottom: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 23px;
+            border-radius: 18px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.06);
+        }
+
+        .card h3 {
+            font-size: 15px;
+            color: #6b7280;
+            margin-bottom: 10px;
+        }
+
+        .card .number {
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+        .blue {
+            color: #2563eb;
+        }
+
+        .green {
+            color: #16a34a;
+        }
+
+        .red {
+            color: #dc2626;
+        }
+
+
+        /* =========================
+           MAIN
+        ========================= */
+
+        .main {
+            display: grid;
+            grid-template-columns: 1fr 1.4fr;
+            gap: 20px;
+        }
+
+        .form-box,
+        .shopping-list,
+        .statistics {
+            background: white;
+            padding: 24px;
+            border-radius: 18px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.06);
+        }
+
+        h2 {
+            margin-bottom: 20px;
+        }
+
+
+        /* =========================
+           INPUTS
+        ========================= */
+
+        input,
+        select {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #d1d5db;
+            border-radius: 10px;
+            margin-bottom: 14px;
+            font-size: 15px;
+            outline: none;
+            background: white;
+            color: #111827;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: #2563eb;
+        }
+
+        .add-btn {
+            width: 100%;
+            padding: 14px;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .add-btn:hover {
+            background: #1d4ed8;
+        }
+
+
+        /* =========================
+           QIDIRUV
+        ========================= */
+
+        .filters {
+            display: grid;
+            grid-template-columns: 1fr 200px;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .filters input,
+        .filters select {
+            margin-bottom: 0;
+        }
+
+
+        /* =========================
+           MAHSULOT
+        ========================= */
+
+        .product {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            padding: 15px 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .product:last-child {
+            border-bottom: none;
+        }
+
+        .product-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 0;
+        }
+
+        .check {
+            width: 22px;
+            height: 22px;
+            cursor: pointer;
+            accent-color: #2563eb;
+        }
+
+        .product-info {
+            min-width: 0;
+        }
+
+        .product-name {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .product-details {
+            font-size: 13px;
+            color: #6b7280;
+        }
+
+        .product.completed .product-name {
+            text-decoration: line-through;
+            color: #9ca3af;
+        }
+
+        .product.completed .product-details {
+            color: #9ca3af;
+        }
+
+        .product-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            white-space: nowrap;
+        }
+
+        .product-price {
+            color: #2563eb;
+            font-weight: bold;
+        }
+
+        .delete-btn {
+            border: none;
+            background: #fee2e2;
+            color: #dc2626;
+            padding: 8px 10px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .delete-btn:hover {
+            background: #fecaca;
+        }
+
+        .empty {
+            text-align: center;
+            color: #6b7280;
+            padding: 35px 0;
+        }
+
+
+        /* =========================
+           STATISTIKA
+        ========================= */
+
+        .statistics {
+            margin-top: 20px;
+        }
+
+        .stat-row {
+            margin-bottom: 18px;
+        }
+
+        .stat-top {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 7px;
+        }
+
+        .stat-bg {
+            width: 100%;
+            height: 12px;
+            background: #e5e7eb;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .stat-fill {
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                #2563eb,
+                #60a5fa
+            );
+            border-radius: 20px;
+        }
+
+
+        /* =========================
+           FOOTER INFO
+        ========================= */
+
+        .summary {
+            margin-top: 18px;
+            padding-top: 18px;
+            border-top: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            font-size: 17px;
+            font-weight: bold;
+        }
+
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 850px) {
+
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+            .main {
+                grid-template-columns: 1fr;
+            }
+
+            .budget-info {
+                grid-template-columns: 1fr;
+            }
+
+            .budget-top {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .budget-input {
+                width: 100%;
+            }
+
+            .budget-input input {
+                width: 100%;
+            }
+
+            .filters {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            .container {
+                width: 92%;
+                padding-top: 15px;
+            }
+
+            header {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 12px;
+            }
+
+            .theme-btn {
+                width: 100%;
+            }
+
+            .logo {
+                text-align: center;
+            }
+
+            .product {
+                align-items: flex-start;
+            }
+
+            .product-right {
+                flex-direction: column;
+                align-items: flex-end;
+            }
+
+            .summary {
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .budget-input {
+                flex-direction: column;
+            }
+
+            .set-budget-btn {
+                width: 100%;
+            }
+
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+<div class="container">
+
+
+    <!-- =========================
+         HEADER
+    ========================== -->
+
+    <header>
+
+        <div class="logo">
+            🛒 Smart<span>List</span>
+        </div>
+
+        <button
+            class="theme-btn"
+            onclick="toggleTheme()"
+            id="themeButton"
+        >
+            🌙 Dark Mode
+        </button>
+
+    </header>
+
+
+    <!-- =========================
+         BUDGET
+    ========================== -->
+
+    <div class="budget-box">
+
+        <div class="budget-top">
+
+            <div class="budget-title">
+                💰 Xarid budjeti
+            </div>
+
+            <div class="budget-input">
+
+                <input
+                    type="number"
+                    id="budgetInput"
+                    placeholder="Masalan: 200000"
+                >
+
+                <button
+                    class="set-budget-btn"
+                    onclick="setBudget()"
+                >
+                    Budjetni saqlash
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <div class="budget-info">
+
+            <div class="budget-stat">
+
+                <small>
+                    💰 Budjet
+                </small>
+
+                <strong
+                    id="budgetAmount"
+                >
+                    0 so'm
+                </strong>
+
+            </div>
+
+
+            <div class="budget-stat">
+
+                <small>
+                    🛒 Xarajat
+                </small>
+
+                <strong
+                    id="spentAmount"
+                    class="red"
+                >
+                    0 so'm
+                </strong>
+
+            </div>
+
+
+            <div class="budget-stat">
+
+                <small>
+                    💵 Qolgan
+                </small>
+
+                <strong
+                    id="remainingAmount"
+                    class="green"
+                >
+                    0 so'm
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="progress-bg">
+
+            <div
+                class="progress"
+                id="budgetProgress"
+            ></div>
+
+        </div>
+
+
+        <div
+            class="warning"
+            id="budgetWarning"
+        >
+            ⚠️ Diqqat! Xaridlaringiz belgilangan
+            budjetdan oshib ketdi.
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         CARDS
+    ========================== -->
+
+    <div class="cards">
+
+        <div class="card">
+
+            <h3>
+                🛒 Jami mahsulot
+            </h3>
+
+            <div
+                class="number blue"
+                id="totalProducts"
+            >
+                0
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>
+                ✅ Sotib olingan
+            </h3>
+
+            <div
+                class="number green"
+                id="completedProducts"
+            >
+                0
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>
+                ⏳ Qolgan mahsulot
+            </h3>
+
+            <div
+                class="number red"
+                id="remainingProducts"
+            >
+                0
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         MAIN
+    ========================== -->
+
+    <div class="main">
+
+
+        <!-- ======================
+             ADD PRODUCT
+        ======================= -->
+
+        <div class="form-box">
+
+            <h2>
+                ➕ Mahsulot qo‘shish
+            </h2>
+
+
+            <input
+                type="text"
+                id="productName"
+                placeholder="Mahsulot nomi"
+            >
+
+
+            <input
+                type="number"
+                id="productQuantity"
+                placeholder="Miqdori"
+                min="1"
+                value="1"
+            >
+
+
+            <input
+                type="number"
+                id="productPrice"
+                placeholder="1 dona narxi"
+                min="0"
+            >
+
+
+            <select
+                id="productCategory"
+            >
+
+                <option value="Oziq-ovqat">
+                    🥦 Oziq-ovqat
+                </option>
+
+                <option value="Ichimliklar">
+                    🥤 Ichimliklar
+                </option>
+
+                <option value="Uy-ro‘zg‘or">
+                    🧹 Uy-ro‘zg‘or
+                </option>
+
+                <option value="Kiyim">
+                    👕 Kiyim
+                </option>
+
+                <option value="Dorixona">
+                    💊 Dorixona
+                </option>
+
+                <option value="Texnika">
+                    📱 Texnika
+                </option>
+
+                <option value="Boshqa">
+                    📦 Boshqa
+                </option>
+
+            </select>
+
+
+            <button
+                class="add-btn"
+                onclick="addProduct()"
+            >
+                ➕ Ro‘yxatga qo‘shish
+            </button>
+
+        </div>
+
+
+        <!-- ======================
+             SHOPPING LIST
+        ======================= -->
+
+        <div class="shopping-list">
+
+            <h2>
+                🛒 Xaridlarim
+            </h2>
+
+
+            <div class="filters">
+
+                <input
+                    type="text"
+                    id="searchInput"
+                    placeholder="🔎 Mahsulot qidirish..."
+                    oninput="renderProducts()"
+                >
+
+
+                <select
+                    id="categoryFilter"
+                    onchange="renderProducts()"
+                >
+
+                    <option value="all">
+                        📋 Barcha kategoriyalar
+                    </option>
+
+                    <option value="Oziq-ovqat">
+                        🥦 Oziq-ovqat
+                    </option>
+
+                    <option value="Ichimliklar">
+                        🥤 Ichimliklar
+                    </option>
+
+                    <option value="Uy-ro‘zg‘or">
+                        🧹 Uy-ro‘zg‘or
+                    </option>
+
+                    <option value="Kiyim">
+                        👕 Kiyim
+                    </option>
+
+                    <option value="Dorixona">
+                        💊 Dorixona
+                    </option>
+
+                    <option value="Texnika">
+                        📱 Texnika
+                    </option>
+
+                    <option value="Boshqa">
+                        📦 Boshqa
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div id="productList">
+
+                <div class="empty">
+                    Hali mahsulot qo‘shilmagan.
+                </div>
+
+            </div>
+
+
+            <div class="summary">
+
+                <span>
+                    💰 Umumiy:
+                </span>
+
+                <span
+                    id="totalPrice"
+                    class="blue"
+                >
+                    0 so'm
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         STATISTICS
+    ========================== -->
+
+    <div class="statistics">
+
+        <h2>
+            📊 Kategoriyalar bo‘yicha xarajat
+        </h2>
+
+        <div id="statisticsList">
+
+            <div class="empty">
+                Statistika uchun mahsulot qo‘shing.
+            </div>
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+<script>
+
+
+    /* =================================
+       MA'LUMOTLAR
+    ================================= */
+
+    let products =
+        JSON.parse(
+            localStorage.getItem(
+                "smartListProducts"
+            )
+        ) || [];
+
+
+    let budget =
+        Number(
+            localStorage.getItem(
+                "smartListBudget"
+            )
+        ) || 0;
+
+
+    /* =================================
+       PUL FORMATLASH
+    ================================= */
+
+    function formatMoney(number) {
+
+        return new Intl.NumberFormat(
+            "uz-UZ"
+        ).format(number) + " so'm";
+
+    }
+
+
+    /* =================================
+       BUDJETNI SAQLASH
+    ================================= */
+
+    function setBudget() {
+
+        const input =
+            document.getElementById(
+                "budgetInput"
+            );
+
+
+        const value =
+            Number(input.value);
+
+
+        if (value <= 0) {
+
+            alert(
+                "Iltimos, to‘g‘ri budjet kiriting."
+            );
+
+            return;
+
+        }
+
+
+        budget = value;
+
+
+        localStorage.setItem(
+            "smartListBudget",
+            budget
+        );
+
+
+        input.value = "";
+
+
+        render();
+
+    }
+
+
+    /* =================================
+       MAHSULOT QO‘SHISH
+    ================================= */
+
+    function addProduct() {
+
+        const name =
+            document.getElementById(
+                "productName"
+            ).value.trim();
+
+
+        const quantity =
+            Number(
+                document.getElementById(
+                    "productQuantity"
+                ).value
+            );
+
+
+        const price =
+            Number(
+                document.getElementById(
+                    "productPrice"
+                ).value
+            );
+
+
+        const category =
+            document.getElementById(
+                "productCategory"
+            ).value;
+
+
+        if (
+            name === "" ||
+            quantity <= 0 ||
+            price < 0
+        ) {
+
+            alert(
+                "Iltimos, mahsulot ma'lumotlarini to‘g‘ri kiriting."
+            );
+
+            return;
+
+        }
+
+
+        const product = {
+
+            id: Date.now(),
+
+            name: name,
+
+            quantity: quantity,
+
+            price: price,
+
+            category: category,
+
+            completed: false
+
+        };
+
+
+        products.push(product);
+
+
+        saveProducts();
+
+
+        document.getElementById(
+            "productName"
+        ).value = "";
+
+
+        document.getElementById(
+            "productQuantity"
+        ).value = 1;
+
+
+        document.getElementById(
+            "productPrice"
+        ).value = "";
+
+
+        render();
+
+    }
+
+
+    /* =================================
+       MAHSULOTLARNI SAQLASH
+    ================================= */
+
+    function saveProducts() {
+
+        localStorage.setItem(
+            "smartListProducts",
+            JSON.stringify(products)
+        );
+
+    }
+
+
+    /* =================================
+       MAHSULOTNI O‘CHIRISH
+    ================================= */
+
+    function deleteProduct(id) {
+
+        const answer =
+            confirm(
+                "Bu mahsulotni o‘chirmoqchimisiz?"
+            );
+
+
+        if (!answer) {
+
+            return;
+
+        }
+
+
+        products =
+            products.filter(
+                product =>
+                    product.id !== id
+            );
+
+
+        saveProducts();
+
+        render();
+
+    }
+
+
+    /* =================================
+       SOTIB OLINGANINI BELGILASH
+    ================================= */
+
+    function toggleProduct(id) {
+
+        products =
+            products.map(
+                product => {
+
+                    if (
+                        product.id === id
+                    ) {
+
+                        product.completed =
+                            !product.completed;
+
+                    }
+
+                    return product;
+
+                }
+            );
+
+
+        saveProducts();
+
+        render();
+
+    }
+
+
+    /* =================================
+       MAHSULOT UMUMIY NARXI
+    ================================= */
+
+    function getProductTotal(product) {
+
+        return (
+            product.quantity *
+            product.price
+        );
+
+    }
+
+
+    /* =================================
+       JAMI XARAJAT
+    ================================= */
+
+    function getTotalPrice() {
+
+        return products.reduce(
+            (total, product) =>
+                total +
+                getProductTotal(
+                    product
+                ),
+            0
+        );
+
+    }
+
+
+    /* =================================
+       MAHSULOTLARNI CHIQARISH
+    ================================= */
+
+    function renderProducts() {
+
+        const list =
+            document.getElementById(
+                "productList"
+            );
+
+
+        const search =
+            document.getElementById(
+                "searchInput"
+            ).value
+            .toLowerCase()
+            .trim();
+
+
+        const category =
+            document.getElementById(
+                "categoryFilter"
+            ).value;
+
+
+        const filtered =
+            products.filter(
+                product => {
+
+                    const matchesSearch =
+                        product.name
+                            .toLowerCase()
+                            .includes(
+                                search
+                            );
+
+
+                    const matchesCategory =
+                        category === "all" ||
+                        product.category ===
+                        category;
+
+
+                    return (
+                        matchesSearch &&
+                        matchesCategory
+                    );
+
+                }
+            );
+
+
+        if (
+            filtered.length === 0
+        ) {
+
+            list.innerHTML = `
+                <div class="empty">
+                    🔍 Mahsulot topilmadi.
+                </div>
+            `;
+
+            return;
+
+        }
+
+
+        list.innerHTML =
+            filtered.map(
+                product => {
+
+                    const total =
+                        getProductTotal(
+                            product
+                        );
+
+
+                    return `
+
+                        <div
+                            class="product
+                            ${
+                                product.completed
+                                ? "completed"
+                                : ""
+                            }"
+                        >
+
+                            <div class="product-left">
+
+                                <input
+                                    type="checkbox"
+                                    class="check"
+                                    ${
+                                        product.completed
+                                        ? "checked"
+                                        : ""
+                                    }
+                                    onchange="
+                                        toggleProduct(
+                                            ${product.id}
+                                        )
+                                    "
+                                >
+
+
+                                <div
+                                    class="product-info"
+                                >
+
+                                    <div
+                                        class="product-name"
+                                    >
+                                        ${product.name}
+                                    </div>
+
+                                    <div
+                                        class="product-details"
+                                    >
+                                        ${product.category}
+                                        •
+                                        ${product.quantity}
+                                        dona ×
+                                        ${formatMoney(
+                                            product.price
+                                        )}
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <div
+                                class="product-right"
+                            >
+
+                                <span
+                                    class="product-price"
+                                >
+                                    ${formatMoney(
+                                        total
+                                    )}
+                                </span>
+
+
+                                <button
+                                    class="delete-btn"
+                                    onclick="
+                                        deleteProduct(
+                                            ${product.id}
+                                        )
+                                    "
+                                >
+                                    🗑️
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    `;
+
+                }
+            ).join("");
+
+    }
+
+
+    /* =================================
+       STATISTIKA
+    ================================= */
+
+    function renderStatistics() {
+
+        const list =
+            document.getElementById(
+                "statisticsList"
+            );
+
+
+        const categories = {};
+
+
+        products.forEach(
+            product => {
+
+                if (
+                    !categories[
+                        product.category
+                    ]
+                ) {
+
+                    categories[
+                        product.category
+                    ] = 0;
+
+                }
+
+
+                categories[
+                    product.category
+                ] +=
+                    getProductTotal(
+                        product
+                    );
+
+            }
+        );
+
+
+        const entries =
+            Object.entries(
+                categories
+            );
+
+
+        if (
+            entries.length === 0
+        ) {
+
+            list.innerHTML = `
+                <div class="empty">
+                    Statistika uchun mahsulot qo‘shing.
+                </div>
+            `;
+
+            return;
+
+        }
+
+
+        const total =
+            entries.reduce(
+                (sum, item) =>
+                    sum + item[1],
+                0
+            );
+
+
+        list.innerHTML =
+            entries.map(
+                ([category, amount]) => {
+
+                    const percent =
+                        total > 0
+                        ? (
+                            amount /
+                            total
+                        ) * 100
+                        : 0;
+
+
+                    return `
+
+                        <div class="stat-row">
+
+                            <div class="stat-top">
+
+                                <span>
+                                    ${category}
+                                </span>
+
+                                <strong>
+                                    ${formatMoney(
+                                        amount
+                                    )}
+                                </strong>
+
+                            </div>
+
+
+                            <div class="stat-bg">
+
+                                <div
+                                    class="stat-fill"
+                                    style="
+                                        width:
+                                        ${percent}%
+                                    "
+                                ></div>
+
+                            </div>
+
+                        </div>
+
+                    `;
+
+                }
+            ).join("");
+
+    }
+
+
+    /* =================================
+       DASHBOARD
+    ================================= */
+
+    function renderDashboard() {
+
+        const total =
+            getTotalPrice();
+
+
+        const completed =
+            products.filter(
+                product =>
+                    product.completed
+            ).length;
+
+
+        const remaining =
+            products.length -
+            completed;
+
+
+        document.getElementById(
+            "totalProducts"
+        ).textContent =
+            products.length;
+
+
+        document.getElementById(
+            "completedProducts"
+        ).textContent =
+            completed;
+
+
+        document.getElementById(
+            "remainingProducts"
+        ).textContent =
+            remaining;
+
+
+        document.getElementById(
+            "totalPrice"
+        ).textContent =
+            formatMoney(total);
+
+    }
+
+
+    /* =================================
+       BUDJETNI KO‘RSATISH
+    ================================= */
+
+    function renderBudget() {
+
+        const spent =
+            getTotalPrice();
+
+
+        const remaining =
+            budget - spent;
+
+
+        document.getElementById(
+            "budgetAmount"
+        ).textContent =
+            formatMoney(budget);
+
+
+        document.getElementById(
+            "spentAmount"
+        ).textContent =
+            formatMoney(spent);
+
+
+        document.getElementById(
+            "remainingAmount"
+        ).textContent =
+            formatMoney(
+                remaining
+            );
+
+
+        const progress =
+            document.getElementById(
+                "budgetProgress"
+            );
+
+
+        const warning =
+            document.getElementById(
+                "budgetWarning"
+            );
+
+
+        if (budget <= 0) {
+
+            progress.style.width =
+                "0%";
+
+            warning.style.display =
+                "none";
+
+            return;
+
+        }
+
+
+        const percentage =
+            (
+                spent /
+                budget
+            ) * 100;
+
+
+        progress.style.width =
+            Math.min(
+                percentage,
+                100
+            ) + "%";
+
+
+        if (
+            spent > budget
+        ) {
+
+            progress.style.background =
+                "#dc2626";
+
+            warning.style.display =
+                "block";
+
+        } else if (
+            percentage >= 80
+        ) {
+
+            progress.style.background =
+                "#f59e0b";
+
+            warning.style.display =
+                "block";
+
+            warning.textContent =
+                "⚠️ Diqqat! Budjetning 80% dan ko‘prog‘i ishlatildi.";
+
+        } else {
+
+            progress.style.background =
+                "linear-gradient(90deg,#2563eb,#60a5fa)";
+
+            warning.style.display =
+                "none";
+
+        }
+
+    }
+
+
+    /* =================================
+       DARK MODE
+    ================================= */
+
+    function toggleTheme() {
+
+        document.body.classList.toggle(
+            "dark"
+        );
+
+
+        const dark =
+            document.body.classList.contains(
+                "dark"
+            );
+
+
+        localStorage.setItem(
+            "smartListDark",
+            dark
+        );
+
+
+        updateThemeButton();
+
+    }
+
+
+    function updateThemeButton() {
+
+        const button =
+            document.getElementById(
+                "themeButton"
+            );
+
+
+        const dark =
+            document.body.classList.contains(
+                "dark"
+            );
+
+
+        if (dark) {
+
+            button.textContent =
+                "☀️ Light Mode";
+
+        } else {
+
+            button.textContent =
+                "🌙 Dark Mode";
+
+        }
+
+    }
+
+
+    /* =================================
+       TEMA YUKLASH
+    ================================= */
+
+    function loadTheme() {
+
+        const dark =
+            localStorage.getItem(
+                "smartListDark"
+            ) === "true";
+
+
+        if (dark) {
+
+            document.body.classList.add(
+                "dark"
+            );
+
+        }
+
+
+        updateThemeButton();
+
+    }
+
+
+    /* =================================
+       HAMMASINI YANGILASH
+    ================================= */
+
+    function render() {
+
+        renderProducts();
+
+        renderDashboard();
+
+        renderBudget();
+
+        renderStatistics();
+
+    }
+
+
+    /* =================================
+       START
+    ================================= */
+
+    loadTheme();
+
+    render();
+
+</script>
+
+</body>
+</html>
